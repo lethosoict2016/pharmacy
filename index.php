@@ -6,13 +6,16 @@ $password=$_POST['password'];
 $position=$_POST['position'];
 switch($position){
 case 'Admin':
-$result=mysql_query("SELECT admin_id, username FROM admin WHERE username='$username' AND password='$password'");
-$row=mysql_fetch_array($result);
+$sql = "SELECT admin_id, username FROM admin WHERE username='$username' AND password='$password'";
+$result=mysqli_query($con,$sql);
+$row=mysqli_fetch_array($result);
 if($row>0){
 session_start();
 $_SESSION['admin_id']=$row[0];
 $_SESSION['username']=$row[1];
-header("location:http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/admin.php");
+//header("location:".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."admin.php");
+
+	header("location: admin.php");
 }else{
 $message="<font color=red>Invalid login Try Again</font>";
 }
@@ -63,7 +66,8 @@ $message="<font color=red>Invalid login Try Again</font>";
 }
 break;
 }}
-echo <<<LOGIN
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -78,6 +82,13 @@ height: auto;}
 </style>
 </head>
 <body>
+12 <br>
+18 <br>
+<?php
+echo $username.'<br>';
+echo $password.'<br>';
+echo $position;
+?>
 <div id="content">
 <div id="header">
 <h1><img src="images/hd_logo.jpg">Pharmacy Sys</h1>
@@ -89,8 +100,8 @@ height: auto;}
      <div class="login">
 	 <img src="images/hd_logo.jpg">
       <h1>Login here</h1>
-	  $message
-      <form method="post" action="index.php">
+	 <?php echo $message; ?>
+      <form method="post"">
 		 <p><input type="text" name="username" value="" placeholder="Username"></p>
         <p><input type="password" name="password" value="" placeholder="Password"></p>
 		<p><select name="position">
@@ -109,5 +120,5 @@ height: auto;}
 </div>
 </body>
 </html>
-LOGIN;
-?>
+
+
